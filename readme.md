@@ -1,4 +1,7 @@
-) first cd driectory generate dws
-]cd (pwd)
-./a.apl
-)load a.dws
+) first cd driectory generate dws  
+]cd (pwd)  
+./a.apl  
+)load a.dws  
+
+why curl instead of httpcomannd.  
+tested on sync condition, The speed is about the same, but I think curl is easier.
