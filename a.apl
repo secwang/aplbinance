@@ -8,17 +8,14 @@ display←{ ⎕IO ⎕ML←0 ⋄ ⍺←1 ⋄ chars←⍺⊃'..''''|-' '┌┐└�
 pp←{⍵⊣⎕←#.display ⍵}
 assert←{⍺←'assertion failure' ⋄ 0∊⍵:⍺ ⎕SIGNAL 8 ⋄ shy←0} ⍝ https://www.jsoftware.com/papers/APL_exercises/
 
-
 sapi fapi api key ← 'api.binance.com' 'fapi.binance.com' '' '' ⍝ endpoint,api,key
 
 2⎕fix '∇r←ts' 'tst ← (20 ⎕dt''Z'')×1000' 'tst ← ''I13'' ⎕fmt tst' 'r←tst[0;]' '∇'
 
 ⍝⎕fx  'ts' 'tst ←(20 ⎕dt''Z'')×1000' 'tst ← ''I13'' ⎕fmt tst' 'tst[0;]' 
 
-
 h ← {((2÷⍨⍴⍵) ,2) ⍴ ⍵}
 ue←{x←h ⍵⋄ m← x[;0] ,¨'=',¨⍕¨ x[;1]⋄ ¯1↓ ∊m,¨'&'} ⍝   ue 'abc' 'example' 'def' '123' 'ghi' '5.6'
-
 
 
 sbg←{⍺←⍬⋄ u1←  'https://',sapi,⍵⋄ x ← 'curl -s -X GET "' , u1, '"'⋄⍺≡⍬: ⊃⎕SH  x ⋄ x←(¯1↓x) , '?',⍺ ,'"'  ⋄ ⊃⎕SH  x}
@@ -49,11 +46,11 @@ fpos←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbga '/fapi/v2/p
 fca←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbd '/fapi/v1/allOpenOrders'}
 
 
-⍝fodl 'auction' 'BUY' '1' '10'
-fodl←{x← ⍵⋄s si q p ← x  ⋄ s ← cu s⋄ qv ← 'symbol' s 'side' si 'type' 'LIMIT' 'timeInForce' 'GTC' 'quantity' q 'price' p 'timestamp' ts ⋄ q←ue qv⋄q fbp '/fapi/v1/order'}
+⍝fodl 'auction' 'buy' '1' '10'
+fodl←{x← ⍵⋄s si q p ← x ⋄ si← 1⎕C si ⋄ s ← cu s⋄ qv ← 'symbol' s 'side' si 'type' 'LIMIT' 'timeInForce' 'GTC' 'quantity' q 'price' p 'timestamp' ts ⋄ q←ue qv⋄q fbp '/fapi/v1/order'}
 
-⍝fodm 'auction' 'BUY' '1' 
-fodm←{x← ⍵⋄s si q ← x  ⋄ s ← cu s⋄ qv ← 'symbol' s 'side' si 'type' 'MARKET' 'quantity' q 'timestamp' ts ⋄ q←ue qv⋄q fbp '/fapi/v1/order'}
+⍝fodm 'auction' 'buy' '1' 
+fodm←{x← ⍵⋄s si q ← x  ⋄si← 1⎕C si ⋄ s ← cu s⋄ qv ← 'symbol' s 'side' si 'type' 'MARKET' 'quantity' q 'timestamp' ts ⋄ q←ue qv⋄q fbp '/fapi/v1/order'}
 
 
 ⎕fx 'sst' 'sbg ''/api/v3/time'' '
