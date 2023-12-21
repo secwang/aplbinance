@@ -45,6 +45,8 @@ fods←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbga '/fapi/v1/o
 fpos←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbga '/fapi/v2/positionRisk'}
 fca←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbd '/fapi/v1/allOpenOrders'}
 
+⎕fx 'fbal' 'fbalq← ue ''timestamp'' ts' 'fbalq fbga ''/fapi/v2/balance'''
+
 
 ⍝fodl 'auction' 'buy' '1' '10'
 fodl←{x← ⍵⋄s si q p ← x ⋄ si← 1⎕C si ⋄ s ← cu s⋄ qv ← 'symbol' s 'side' si 'type' 'LIMIT' 'timeInForce' 'GTC' 'quantity' q 'price' p 'timestamp' ts ⋄ q←ue qv⋄q fbp '/fapi/v1/order'}
