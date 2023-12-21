@@ -11,9 +11,9 @@ assert←{⍺←'assertion failure' ⋄ 0∊⍵:⍺ ⎕SIGNAL 8 ⋄ shy←0} ⍝
 
 sapi fapi api key ← 'api.binance.com' 'fapi.binance.com' '' '' ⍝ endpoint,api,key
 
-2⎕fix '∇r←ts' 'tst ← (20 ⎕DT''Z'')×1000' 'tst ← ''I13'' ⎕fmt tst' 'r←tst[0;]' '∇'
+2⎕fix '∇r←ts' 'tst ← (20 ⎕dt''Z'')×1000' 'tst ← ''I13'' ⎕fmt tst' 'r←tst[0;]' '∇'
 
-
+⍝⎕fx  'ts' 'tst ←(20 ⎕dt''Z'')×1000' 'tst ← ''I13'' ⎕fmt tst' 'tst[0;]' 
 
 
 h ← {((2÷⍨⍴⍵) ,2) ⍴ ⍵}
@@ -31,36 +31,34 @@ fbga←{ u1←  'https://',fapi,⍵⋄ q←  ⍺ ⋄si←⊃⎕sh './sign.sh "' 
 
 ⍝'symbol=BTCUSDT&side=BUY&type=LIMIT&timeInForce=GTC&quantity=0.02&price=10000' bp '/fapi/v1/order'
 
-fbp ←{ q ← ⍺  ⋄ u ← 'https://',fapi,⍵  ⋄ q1 ←  q ,'&timestamp=', ts   ⋄ si← ⊃⎕sh  './sign.sh "' , q1 , '" "' , sec ,'"' ⋄ x←  'curl -s -H "X-MBX-APIKEY: ', api , '" -X POST "', u ,'" -d "' , q1 , '&signature=' , si ,'" '  ⋄ ⎕sh x }
+fbp ←{  u ← 'https://',fapi,⍵  ⋄ q1 ←  ⍺  ⋄ si← ⊃⎕sh  './sign.sh "' , q1 , '" "' , sec ,'"' ⋄ x←  'curl -s -H "X-MBX-APIKEY: ', api , '" -X POST "', u ,'" -d "' , q1 , '&signature=' , si ,'" '  ⋄ ⊃⎕sh x }
 
 
-(ue 'symbol' 'BTCUSDT' 'side' 'BUY'  'type' 'LIMIT' 'timeInForce' 'GTC' )
+fbd ←{  u ← 'https://',fapi,⍵  ⋄ q1 ←  ⍺  ⋄ si← ⊃⎕sh  './sign.sh "' , q1 , '" "' , sec ,'"' ⋄ x←  'curl -s -H "X-MBX-APIKEY: ', api , '" -X DELETE "', u ,'" -d "' , q1 , '&signature=' , si ,'" '  ⋄ ⊃⎕sh x }
 
 
-2⎕fix '∇r←fst' 'r← fbg ''/fapi/v1/time''' '∇'
+⎕fx 'fst' 'fbg ''/fapi/v1/time'' '
+
 2⎕fix '∇r←cu arg' 'r← 1⎕C arg,''USDT''' '∇'
-
 
 fob←{s ← cu ⍵⋄ q←ue 'symbol' s 'limit' '5' ⋄ q fbg '/fapi/v1/depth' }
 fbt←{s ← cu ⍵ ⋄ q←ue 'symbol' s  ⋄ q fbg '/fapi/v1/ticker/bookTicker' }
 fht←{s ← cu ⍵ ⋄ q←ue 'symbol' s  ⋄ q fbg '/fapi/v1/ticker/24hr' }
-
 fods←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbga '/fapi/v1/openOrders'}
 fpos←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbga '/fapi/v2/positionRisk'}
-
-fod←{s ← cu ⍵ , q←ue 'symbol' s 'side' 'BUY' 'type' 'LIMIT' 'timeInForce' 'GTC' 'quantity' '0.02' 'price' '10000' ⋄ q bp '/fapi/v1/order'}
-
-fmod←{s ← cu ⍵ , q←ue 'symbol' s 'side' 'BUY' 'type' 'MARKET' 'timeInForce' 'GTC' 'quantity' '0.02'  ⋄ q bp '/fapi/v1/order'}
+fca←{s ← cu ⍵⋄ q← ue 'symbol' s 'timestamp' ts ⋄ q fbd '/fapi/v1/allOpenOrders'}
 
 
+⍝fodl 'auction' 'BUY' '1' '10'
+fodl←{x← ⍵⋄s si q p ← x  ⋄ s ← cu s⋄ qv ← 'symbol' s 'side' si 'type' 'LIMIT' 'timeInForce' 'GTC' 'quantity' q 'price' p 'timestamp' ts ⋄ q←ue qv⋄q fbp '/fapi/v1/order'}
+
+⍝fodm 'auction' 'BUY' '1' 
+fodm←{x← ⍵⋄s si q ← x  ⋄ s ← cu s⋄ qv ← 'symbol' s 'side' si 'type' 'MARKET' 'quantity' q 'timestamp' ts ⋄ q←ue qv⋄q fbp '/fapi/v1/order'}
 
 
-2⎕fix '∇r←sst' 'r← sbg ''/api/v3/time''' '∇'
-
+⎕fx 'sst' 'sbg ''/api/v3/time'' '
 sob←{s ← cu ⍵ ⋄ q←ue 'symbol' s 'limit' '5' ⋄ q sbg '/api/v3/depth' }
 sbt←{s ← cu ⍵ ⋄ q←ue 'symbol' s  ⋄ q sbg ' /api/v3/ticker/tradingDay' }
-
-
 
 
 
